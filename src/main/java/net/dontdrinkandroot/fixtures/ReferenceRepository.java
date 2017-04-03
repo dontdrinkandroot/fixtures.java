@@ -14,9 +14,10 @@ public class ReferenceRepository
 
     public <T> T getReference(String name, Class<T> clazz)
     {
+        @SuppressWarnings("unchecked")
         T reference = (T) this.references.get(name);
         if (null == reference) {
-            throw new RuntimeException(String.format("No reference found with name %s", name));
+            throw new RuntimeException(String.format("No reference found with name '%s'", name));
         }
 
         return reference;

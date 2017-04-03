@@ -8,7 +8,7 @@ import java.util.Collection;
  */
 public interface Fixture
 {
-    public Collection<Class<? extends Fixture>> getDependencies();
+    Collection<Class<? extends Fixture>> getDependencies();
 
-    public void load(EntityManager entityManager, ReferenceRepository referenceRepository);
+    void load(EntityManager entityManager, ReferenceRepository referenceRepository);
 }

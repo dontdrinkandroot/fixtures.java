@@ -40,8 +40,7 @@ public class DefaultFixtureLoader implements FixtureLoader
         List<Fixture> orderedFixtures = new ArrayList<Fixture>();
         Map<Class<? extends Fixture>, Fixture> fixtureClassMap = new HashMap<Class<? extends Fixture>, Fixture>();
         Set<Class<? extends Fixture>> nonDependingFixtureClasses = new HashSet<Class<? extends Fixture>>();
-        Map<Class<? extends Fixture>, Set<Class<? extends Fixture>>> fixtureClassDependencies =
-                new HashMap<Class<? extends Fixture>, Set<Class<? extends Fixture>>>();
+        Map<Class<? extends Fixture>, Set<Class<? extends Fixture>>> fixtureClassDependencies = new HashMap<>();
 
         this.resolveDependencies(fixtureClasses, fixtureClassMap, nonDependingFixtureClasses, fixtureClassDependencies);
 
