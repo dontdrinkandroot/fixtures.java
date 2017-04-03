@@ -1,15 +1,16 @@
 language: java
 
 jdk:
-- oraclejdk8
+    - oraclejdk8
 
 cache:
-  directories:
-  - "$HOME/.m2/repository"
+    directories:
+        - "$HOME/.m2/repository"
 
 env:
-  global:
-
+    global:
+        - secure: eJ/E6G6HrxbQMrLB/IVxo1NTP/g8UUQ/yteLdjmfrQQIxOb1UuYCdARN9jbSovukEubfcbzg2BQzRUuNoHUUsvQ1/FACsWhsCw07gfQekQPNk8yFaHpLhRDxA9BUxjkK1b1knc7mfxChaYZqSguVaojnpJVRvnTZtonyDZnDQyqKBiWgvnHhXOez3cfPyPRfaWaZ8GR3HJIY2AxSUC51J893OSxdeDFD9vQ6AXTra4JwFbm4psC8bbPvqqdUXpjoSi9zoWx215ZEzK9S56aiPgykm3dquqbJYmDRNrGJw/GAyb8yB3bDMCLGu8eGrtPbgsMuWkDz3atz9+ulx+Neq6pMNKq/E94mu5MWtY+mcS+HIVLZzcpVCBxRaxATP+QesqNz8ZA1mq8TCfTJE3wHmFqRbgJKw9+3Ewq8j8Ezz4s/5QENuV93RCsYCsChX7UbK2cybxQcc6yuW7745gmWKt/aWXM3eZ7Djdaq+YjU+GFT1MhGAC9tuWxKkMpKgcOuNX4XeSxX8+4lhL43Hju7bf9Hmh/bQIiKsr3V0ncq3UV11HsDrJ8g3N7OX1JDnONhpqpveNZ8OV/XB2Z80T22yOkTxjQdniHZ//6mNXwFQ+91x8sV6B0+BvWBeJ6ATjCqZnrUk8lEm5Rg5jPvFxNz8KifpTLVo2PvwwkHMHOmhUU=
+        - secure: tPT5qToM8eccJimYUAzSkLzvhF3+jkrYimb9zjkfxL9yq2EETdHfDvM2zIXKrKmqqxosDlSwDV9NmpZeIUUq81Co8QhuFYCMBW78+6mDpsYo9QEkxEn0UeZ0CUFpXrmuB+x/22m4Ti2QQs7QUnrcT7d/qoxBoSxem748qiqzUIhsvFPJRiJoyPB2nmvCv2DYp3MeOtoAe60ugcK9WtLAdqzRJ9hcj+8kWCl9tjkiWDjCJ6EuNG4LX+0We3/gLEpESktak95Bo0jo2WCEBQjqOfM+scXL6Uh95eQG3iIsl/jh5be6rt5BQ2aMerWFcR2j4Ec2WvP/MnYjXIpY7y0wC524OeQpiU9UTKlrSYbQLmpkfKdTeK87w2VhAiiO7peTpFJXmiOgPqphxZuN2qLwFIp9zQJhxk6pah4f6PLQoG4Bb5wITdwGV+WKB5EjetT/0TllWOL0QfvCKir36keU51U0FGjhF8jixPIMFBrUt5hIu3wJHEv1WgSRhAVvCijIhW6RhDSGaXbUxLTHKsltd4BhOoX7q9muRXmuhyWf6/C5OhZYi7w1iUDRVMTJaI+hoc0vQsol1xxsNcI3RWQFBfstNo1Ubs0/7NVnpft3wlEY9lCDqhmpran/65QuixoGY2H+MASmcuXXUIuAmQFZy3aVVD7IfXxGoSrrPrA6mzw=
 
 script:
-- mvn -DfailOnServiceError=false clean jacoco:prepare-agent test deploy jacoco:report coveralls:report --settings travis-maven-settings.xml
+    - mvn -DfailOnServiceError=false clean jacoco:prepare-agent test deploy jacoco:report coveralls:report --settings travis-maven-settings.xml
