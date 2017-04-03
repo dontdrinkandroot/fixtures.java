@@ -1,0 +1,15 @@
+language: java
+
+jdk:
+- oraclejdk8
+
+cache:
+  directories:
+  - "$HOME/.m2/repository"
+
+env:
+  global:
+
+
+script:
+- mvn -DfailOnServiceError=false clean jacoco:prepare-agent test deploy jacoco:report coveralls:report --settings travis-maven-settings.xml
