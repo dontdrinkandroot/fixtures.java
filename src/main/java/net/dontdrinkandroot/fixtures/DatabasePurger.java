@@ -17,7 +17,6 @@ import java.util.*;
 
 public class DatabasePurger
 {
-
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     protected EntityManager entityManager;

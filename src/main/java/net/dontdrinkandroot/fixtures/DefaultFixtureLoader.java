@@ -109,7 +109,7 @@ public class DefaultFixtureLoader implements FixtureLoader
         for (Class<? extends Fixture> fixtureClass : fixtureClasses) {
             if (!fixtureClassMap.containsKey(fixtureClass)) {
                 try {
-                    Fixture fixture = fixtureClass.newInstance();
+                    Fixture fixture = this.instantiateFixtureClass(fixtureClass);
                     fixtureClassMap.put(fixtureClass, fixture);
                     Collection<Class<? extends Fixture>> dependencies = fixture.getDependencies();
                     if (dependencies.isEmpty()) {
@@ -123,13 +123,16 @@ public class DefaultFixtureLoader implements FixtureLoader
                                 fixtureClassDependencies
                         );
                     }
-                } catch (InstantiationException e) {
-                    throw new RuntimeException(e);
-                } catch (IllegalAccessException e) {
+                } catch (InstantiationException | IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
             }
         }
+    }
+
+    protected Fixture instantiateFixtureClass(Class<? extends Fixture> fixtureClass) throws InstantiationException, IllegalAccessException
+    {
+        return fixtureClass.newInstance();
     }
 
     @Override
