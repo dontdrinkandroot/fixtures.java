@@ -8,11 +8,8 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.metamodel.Attribute;
+import javax.persistence.metamodel.*;
 import javax.persistence.metamodel.Attribute.PersistentAttributeType;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.Metamodel;
-import javax.persistence.metamodel.SingularAttribute;
 import java.util.*;
 
 public class DatabasePurger
@@ -155,6 +152,9 @@ public class DatabasePurger
                         }
                         break;
                     case MANY_TO_MANY:
+                        PluralAttribute<? super T, ?, ?> pluralAttribute = (PluralAttribute<? super T, ?, ?>) attribute;
+                        //TODO: Ignoring
+                        break;
                     case ELEMENT_COLLECTION:
                     case EMBEDDED:
                         throw new RuntimeException(
