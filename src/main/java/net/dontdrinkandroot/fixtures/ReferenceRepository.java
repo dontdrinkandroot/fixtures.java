@@ -3,6 +3,9 @@ package net.dontdrinkandroot.fixtures;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Philip Washington Sorst <philip@sorst.net>
+ */
 public class ReferenceRepository
 {
     private Map<String, Object> references = new HashMap<>();

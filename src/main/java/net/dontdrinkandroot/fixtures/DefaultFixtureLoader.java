@@ -2,14 +2,19 @@ package net.dontdrinkandroot.fixtures;
 
 import net.dontdrinkandroot.fixtures.dependencyresolution.DirectedGraph;
 import net.dontdrinkandroot.fixtures.dependencyresolution.TopologicalSort;
-import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+/**
+ * @author Philip Washington Sorst <philip@sorst.net>
+ */
 public class DefaultFixtureLoader implements FixtureLoader
 {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -19,13 +24,29 @@ public class DefaultFixtureLoader implements FixtureLoader
 
     protected ReferenceRepository referenceRepository = new ReferenceRepository();
 
-    protected Set<Pair<Class<?>, Class<?>>> purgeIgnoreAssociations;
+    private DatabasePurger databasePurger = null;
+
+    public DefaultFixtureLoader()
+    {
+        /* Default constructor */
+    }
+
+    /**
+     * Construct a new {@link FixtureLoader} with the given {@link DatabasePurger} that will be executed before the fixtures are loaded.
+     *
+     * @param databasePurger The {@link DatabasePurger} to use.
+     */
+    public DefaultFixtureLoader(DatabasePurger databasePurger)
+    {
+        this.databasePurger = databasePurger;
+    }
 
     @Override
     public void load(Collection<Class<? extends Fixture>> fixtureClasses)
     {
-        DatabasePurger purger = new DatabasePurger(this.entityManager, this.purgeIgnoreAssociations);
-        purger.purge();
+        if (null != this.databasePurger) {
+            this.databasePurger.purge();
+        }
 
         List<Fixture> orderedFixtures;
         try {
@@ -78,10 +99,5 @@ public class DefaultFixtureLoader implements FixtureLoader
     public void setEntityManager(EntityManager entityManager)
     {
         this.entityManager = entityManager;
-    }
-
-    public void setPurgeIgnoreAssociations(Set<Pair<Class<?>, Class<?>>> purgeIgnoreAssociations)
-    {
-        this.purgeIgnoreAssociations = purgeIgnoreAssociations;
     }
 }

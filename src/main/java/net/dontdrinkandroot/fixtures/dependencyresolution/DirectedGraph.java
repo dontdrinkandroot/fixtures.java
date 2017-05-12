@@ -27,6 +27,11 @@ public class DirectedGraph<V>
         oppositeVertices.add(start);
     }
 
+    public void addVertex(V v)
+    {
+        this.vertices.add(v);
+    }
+
     public Set<V> getVertices()
     {
         return this.vertices;
