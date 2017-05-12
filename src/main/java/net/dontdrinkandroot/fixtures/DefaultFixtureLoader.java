@@ -22,8 +22,6 @@ public class DefaultFixtureLoader implements FixtureLoader
     @PersistenceContext
     protected EntityManager entityManager;
 
-    protected ReferenceRepository referenceRepository = new ReferenceRepository();
-
     private DatabasePurger databasePurger = null;
 
     public DefaultFixtureLoader()
@@ -42,8 +40,10 @@ public class DefaultFixtureLoader implements FixtureLoader
     }
 
     @Override
-    public void load(Collection<Class<? extends Fixture>> fixtureClasses)
+    public ReferenceRepository load(Collection<Class<? extends Fixture>> fixtureClasses)
     {
+        ReferenceRepository referenceRepository = new ReferenceRepository();
+
         if (null != this.databasePurger) {
             this.databasePurger.purge();
         }
@@ -57,9 +57,11 @@ public class DefaultFixtureLoader implements FixtureLoader
 
         for (Fixture fixture : orderedFixtures) {
             this.logger.info("Loading fixture " + fixture.getClass().getCanonicalName());
-            fixture.load(this.entityManager, this.referenceRepository);
+            fixture.load(this.entityManager, referenceRepository);
             this.entityManager.flush();
         }
+
+        return referenceRepository;
     }
 
     private List<Fixture> getOrderedFixtures(Collection<Class<? extends Fixture>> fixtureClasses) throws IllegalAccessException, InstantiationException
@@ -67,33 +69,36 @@ public class DefaultFixtureLoader implements FixtureLoader
         Map<Class<? extends Fixture>, Fixture> instantiatedFixtures = new HashMap<>();
         DirectedGraph<Fixture> fixtureGraph = new DirectedGraph<>();
         for (Class<? extends Fixture> fixtureClass : fixtureClasses) {
-            Fixture fixture = this.instantiateFixtureClass(fixtureClass, instantiatedFixtures);
-            for (Class<? extends Fixture> dependingFixtureClass : fixture.getDependencies()) {
-                Fixture dependingFixture = this.instantiateFixtureClass(dependingFixtureClass, instantiatedFixtures);
-                fixtureGraph.addEdge(dependingFixture, fixture);
-            }
+            this.addFixtureClass(fixtureClass, fixtureGraph, instantiatedFixtures);
         }
 
         return TopologicalSort.getTopologialOrder(fixtureGraph);
     }
 
-    protected Fixture instantiateFixtureClass(
-            Class<? extends Fixture> fixtureClass, Map<Class<? extends Fixture>, Fixture> instantiatedFixtures
-    ) throws InstantiationException, IllegalAccessException
+    private Fixture addFixtureClass(
+            Class<? extends Fixture> fixtureClass,
+            DirectedGraph<Fixture> fixtureGraph,
+            Map<Class<? extends Fixture>, Fixture> instantiatedFixtures
+    ) throws IllegalAccessException, InstantiationException
     {
         Fixture fixture = instantiatedFixtures.get(fixtureClass);
         if (null == fixture) {
-            fixture = fixtureClass.newInstance();
+            fixture = this.instantiateFixtureClass(fixtureClass);
+            fixtureGraph.addVertex(fixture);
             instantiatedFixtures.put(fixtureClass, fixture);
+            for (Class<? extends Fixture> dependingFixtureClass : fixture.getDependencies()) {
+                Fixture dependingFixture =
+                        this.addFixtureClass(dependingFixtureClass, fixtureGraph, instantiatedFixtures);
+                fixtureGraph.addEdge(dependingFixture, fixture);
+            }
         }
 
         return fixture;
     }
 
-    @Override
-    public ReferenceRepository getReferenceRepository()
+    protected Fixture instantiateFixtureClass(Class<? extends Fixture> fixtureClass) throws InstantiationException, IllegalAccessException
     {
-        return this.referenceRepository;
+        return fixtureClass.newInstance();
     }
 
     public void setEntityManager(EntityManager entityManager)

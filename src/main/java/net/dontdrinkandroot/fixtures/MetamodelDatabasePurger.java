@@ -113,4 +113,9 @@ public class MetamodelDatabasePurger implements DatabasePurger
 
         return associatedClasses;
     }
+
+    public void setEntityManager(EntityManager entityManager)
+    {
+        this.entityManager = entityManager;
+    }
 }
