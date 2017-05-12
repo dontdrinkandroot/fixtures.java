@@ -11,6 +11,6 @@ abstract public class AbstractFixture implements Fixture
     @Override
     public Collection<Class<? extends Fixture>> getDependencies()
     {
-        return new ArrayList<Class<? extends Fixture>>();
+        return new ArrayList<>();
     }
 }

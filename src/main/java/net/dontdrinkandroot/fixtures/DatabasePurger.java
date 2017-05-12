@@ -1,5 +1,7 @@
 package net.dontdrinkandroot.fixtures;
 
+import net.dontdrinkandroot.fixtures.dependencyresolution.DirectedGraph;
+import net.dontdrinkandroot.fixtures.dependencyresolution.TopologicalSort;
 import org.apache.commons.collections4.iterators.ReverseListIterator;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
@@ -10,7 +12,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.metamodel.*;
 import javax.persistence.metamodel.Attribute.PersistentAttributeType;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class DatabasePurger
 {
@@ -54,73 +58,18 @@ public class DatabasePurger
 
     private List<Class<?>> getOrderedEntityClasses()
     {
-        List<Class<?>> l = new ArrayList<Class<?>>();
-        Set<Class<?>> s = new HashSet<Class<?>>();
-        Map<Class<?>, Set<Class<?>>> edges = new HashMap<Class<?>, Set<Class<?>>>();
-        Map<Class<?>, Set<Class<?>>> reverseEdges = new HashMap<Class<?>, Set<Class<?>>>();
-
+        DirectedGraph<Class<?>> dependencyGraph = new DirectedGraph<>();
         Metamodel metamodel = this.entityManager.getMetamodel();
         Set<EntityType<?>> entities = metamodel.getEntities();
         for (EntityType<?> entityType : entities) {
             Class<?> javaType = entityType.getJavaType();
             Set<Class<?>> associatedClasses = this.getAssociatedClasses(entityType);
-            if (associatedClasses.isEmpty()) {
-                s.add(javaType);
-            } else {
-                edges.put(javaType, associatedClasses);
-                for (Class<?> associatedClass : associatedClasses) {
-                    this.addReverseEdge(reverseEdges, associatedClass, javaType);
-                }
+            for (Class<?> associatedClass : associatedClasses) {
+                dependencyGraph.addEdge(javaType, associatedClass);
             }
         }
 
-        while (!s.isEmpty()) {
-            Class<?> n = this.pop(s);
-            l.add(n);
-            // System.out.println("Popping " + n);
-            if (reverseEdges.containsKey(n)) {
-                for (Class<?> m : reverseEdges.get(n)) {
-                    edges.get(m).remove(n);
-                    // System.out.println("Removing edge " + m + " -> " + n);
-                    if (edges.get(m).isEmpty()) {
-                        // System.out.println("Adding " + m);
-                        edges.remove(m);
-                        s.add(m);
-                    }
-                }
-            }
-        }
-
-        if (!edges.isEmpty()) {
-            for (Class<?> entry : edges.keySet()) {
-                Set<Class<?>> set = edges.get(entry);
-                for (Class<?> other : set) {
-                    this.logger.error("Remaining edge " + entry + " -> " + other);
-                }
-            }
-            throw new RuntimeException("Having a cycle");
-        }
-
-        return l;
-    }
-
-    private void addReverseEdge(Map<Class<?>, Set<Class<?>>> reverseEdges, Class<?> associatedClass, Class<?> javaType)
-    {
-        Set<Class<?>> set = reverseEdges.get(associatedClass);
-        if (null == set) {
-            set = new HashSet<Class<?>>();
-            reverseEdges.put(associatedClass, set);
-        }
-        set.add(javaType);
-    }
-
-    private Class<?> pop(Set<Class<?>> s)
-    {
-        Iterator<Class<?>> iterator = s.iterator();
-        Class<?> n = iterator.next();
-        iterator.remove();
-
-        return n;
+        return TopologicalSort.getTopologialOrder(dependencyGraph);
     }
 
     private <T> Set<Class<?>> getAssociatedClasses(EntityType<T> entityType)
