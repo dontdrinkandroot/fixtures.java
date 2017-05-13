@@ -54,7 +54,10 @@ public class TopologicalSortTest
             List<String> orderedVertices = TopologicalSort.getTopologialOrder(graph);
             Assert.fail("Exception expected");
         } catch (RuntimeException e) {
-            Assert.assertEquals("Graph has at least one cycle: one -> two;three -> one;two -> three;", e.getMessage());
+            Assert.assertEquals(
+                    "Graph has at least one cycle: one -> two; three -> one; two -> three; ",
+                    e.getMessage()
+            );
         }
     }
 }
