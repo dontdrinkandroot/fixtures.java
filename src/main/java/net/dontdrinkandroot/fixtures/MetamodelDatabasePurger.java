@@ -9,8 +9,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.metamodel.*;
+import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.Attribute.PersistentAttributeType;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
+import javax.persistence.metamodel.SingularAttribute;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -70,31 +73,24 @@ public class MetamodelDatabasePurger implements DatabasePurger
 
     private <T> Set<Class<?>> getAssociatedClasses(EntityType<T> entityType)
     {
-        // System.out.println(entityType.getJavaType());
-        Set<Class<?>> associatedClasses = new HashSet<Class<?>>();
+        Class<?> javaType = entityType.getJavaType();
+        Set<Class<?>> associatedClasses = new HashSet<>();
         Set<Attribute<? super T, ?>> attributes = entityType.getAttributes();
         for (Attribute<? super T, ?> attribute : attributes) {
-            if (attribute.isAssociation()) {
-                // System.out.println("\tName: " + attribute.getName());
+            String name = attribute.getName();
+            if (!this.isIgnored(javaType, name) && attribute.isAssociation()) {
                 PersistentAttributeType attributeType = attribute.getPersistentAttributeType();
-                // System.out.println(attributeType);
+                SingularAttribute<? super T, ?> singularAttribute;
                 switch (attributeType) {
                     case MANY_TO_ONE:
-                        SingularAttribute<? super T, ?> singularAttribute = (SingularAttribute<? super T, ?>) attribute;
-                        // TODO hmm. not really.
-                        // if (!singularAttribute.isOptional()) {
+                        singularAttribute = (SingularAttribute<? super T, ?>) attribute;
                         associatedClasses.add(singularAttribute.getJavaType());
-                        // }
                         break;
                     case ONE_TO_ONE:
                         singularAttribute = (SingularAttribute<? super T, ?>) attribute;
                         if (!singularAttribute.isOptional()) {
                             associatedClasses.add(singularAttribute.getJavaType());
                         }
-                        break;
-                    case MANY_TO_MANY:
-                        PluralAttribute<? super T, ?, ?> pluralAttribute = (PluralAttribute<? super T, ?, ?>) attribute;
-                        //TODO: Ignoring
                         break;
                     case ELEMENT_COLLECTION:
                     case EMBEDDED:
@@ -105,13 +101,28 @@ public class MetamodelDatabasePurger implements DatabasePurger
                                         entityType.getJavaType().getCanonicalName(),
                                         attribute.getName()
                                 ));
+                    case MANY_TO_MANY:
                     case ONE_TO_MANY:
                     case BASIC:
+                        /* Ignored */
                 }
             }
         }
 
         return associatedClasses;
+    }
+
+    /**
+     * Overwrite this method in order to ignore certain properties. This can be usefull if cycles in the dependency
+     * graph need to be resolved manually.
+     *
+     * @param clazz    The class to check.
+     * @param property The property of the class to check.
+     * @return Whether the property should be included in building the dependency graph.
+     */
+    protected boolean isIgnored(Class<?> clazz, String property)
+    {
+        return false;
     }
 
     public void setEntityManager(EntityManager entityManager)

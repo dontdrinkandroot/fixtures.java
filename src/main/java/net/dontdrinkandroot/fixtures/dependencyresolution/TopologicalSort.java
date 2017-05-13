@@ -42,7 +42,7 @@ public class TopologicalSort
                     stringBuilder.append(entry.getKey());
                     stringBuilder.append(" -> ");
                     stringBuilder.append(v);
-                    stringBuilder.append(";");
+                    stringBuilder.append("; ");
                 }
             }
             throw new RuntimeException("Graph has at least one cycle: " + stringBuilder);
