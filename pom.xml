@@ -71,6 +71,7 @@
         <version.org.slf4j>1.7.24</version.org.slf4j>
         <!-- Testing -->
         <version.junit>4.12</version.junit>
+        <version.org.apache.logging.log4j>2.8.1</version.org.apache.logging.log4j>
     </properties>
 
     <profiles>
@@ -179,7 +180,7 @@
 
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
+            <artifactId>slf4j-api</artifactId>
             <version>${version.org.slf4j}</version>
         </dependency>
 
@@ -189,6 +190,20 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${version.junit}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${version.org.apache.logging.log4j}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${version.org.apache.logging.log4j}</version>
             <scope>test</scope>
         </dependency>
 
