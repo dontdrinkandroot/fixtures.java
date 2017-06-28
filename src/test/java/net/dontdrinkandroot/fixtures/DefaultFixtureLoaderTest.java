@@ -19,23 +19,19 @@ public class DefaultFixtureLoaderTest
         ReferenceRepository referenceRepository =
                 defaultFixtureLoader.load(Collections.singleton(ExampleFixtureOne.class));
 
-        Assert.assertNotNull(referenceRepository.getReference(
-                ExampleFixtureOne.class.getCanonicalName(),
-                Boolean.class
+        Assert.assertNotNull(referenceRepository.resolve(
+                ExampleFixtureOne.class.getCanonicalName()
         ));
-        Assert.assertNotNull(referenceRepository.getReference(
-                ExampleFixtureTwo.class.getCanonicalName(),
-                Boolean.class
+        Assert.assertNotNull(referenceRepository.resolve(
+                ExampleFixtureTwo.class.getCanonicalName()
         ));
-        Assert.assertNotNull(referenceRepository.getReference(
-                ExampleFixtureThree.class.getCanonicalName(),
-                Boolean.class
+        Assert.assertNotNull(referenceRepository.resolve(
+                ExampleFixtureThree.class.getCanonicalName()
         ));
 
         try {
-            Assert.assertNotNull(referenceRepository.getReference(
-                    ExampleFixtureFour.class.getCanonicalName(),
-                    Boolean.class
+            Assert.assertNotNull(referenceRepository.resolve(
+                    ExampleFixtureFour.class.getCanonicalName()
             ));
             Assert.fail("Exception expected");
         } catch (RuntimeException e) {
@@ -43,9 +39,8 @@ public class DefaultFixtureLoaderTest
         }
 
         try {
-            Assert.assertNotNull(referenceRepository.getReference(
-                    ExampleFixtureFive.class.getCanonicalName(),
-                    Boolean.class
+            Assert.assertNotNull(referenceRepository.resolve(
+                    ExampleFixtureFive.class.getCanonicalName()
             ));
             Assert.fail("Exception expected");
         } catch (RuntimeException e) {

@@ -22,6 +22,6 @@ public class ExampleFixtureOne extends AbstractFixture
     @Override
     public void load(EntityManager entityManager, ReferenceRepository referenceRepository)
     {
-        referenceRepository.addReference(this.getClass().getCanonicalName(), true);
+        referenceRepository.add(this.getClass().getCanonicalName(), true);
     }
 }

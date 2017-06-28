@@ -8,17 +8,17 @@ import java.util.Map;
  */
 public class ReferenceRepository
 {
-    private Map<String, Object> references = new HashMap<>();
+    private Map<String, Object> objects = new HashMap<>();
 
-    public void addReference(String name, Object reference)
+    public <T> void add(String name, T object)
     {
-        this.references.put(name, reference);
+        this.objects.put(name, object);
     }
 
-    public <T> T getReference(String name, Class<T> clazz)
+    public <T> T resolve(String name)
     {
         @SuppressWarnings("unchecked")
-        T reference = (T) this.references.get(name);
+        T reference = (T) this.objects.get(name);
         if (null == reference) {
             throw new RuntimeException(String.format("No reference found with name '%s'", name));
         }

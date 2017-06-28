@@ -8,18 +8,26 @@ import org.junit.Test;
  */
 public class ReferenceRepositoryTest
 {
-    @Test(expected = RuntimeException.class)
-    public void nullReferenceThrowsException()
-    {
-        ReferenceRepository referenceRepository = new ReferenceRepository();
-        referenceRepository.getReference("asdf", String.class);
-    }
-
     @Test
     public void canStoreAndRetrieve()
     {
         ReferenceRepository referenceRepository = new ReferenceRepository();
-        referenceRepository.addReference("test", "asdf");
-        Assert.assertEquals("asdf", referenceRepository.getReference("test", String.class));
+        referenceRepository.add("test", "asdf");
+        Assert.assertEquals("asdf", referenceRepository.resolve("test"));
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void nullReferenceThrowsException()
+    {
+        ReferenceRepository referenceRepository = new ReferenceRepository();
+        referenceRepository.resolve("asdf");
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void wrongClassCastThrowsException()
+    {
+        ReferenceRepository referenceRepository = new ReferenceRepository();
+        referenceRepository.add("test", "asdf");
+        Integer foo = referenceRepository.resolve("test");
     }
 }
