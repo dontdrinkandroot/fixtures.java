@@ -1,4 +1,4 @@
-package net.dontdrinkandroot.fixtures;
+package net.dontdrinkandroot.fixtures.purger;
 
 /**
  * @author Philip Washington Sorst <philip@sorst.net>

@@ -1,4 +1,4 @@
-package net.dontdrinkandroot.fixtures;
+package net.dontdrinkandroot.fixtures.purger;
 
 /**
  * A {@link DatabasePurger} that does nothing.

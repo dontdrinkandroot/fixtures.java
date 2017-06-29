@@ -1,6 +1,8 @@
 package net.dontdrinkandroot.fixtures;
 
 import net.dontdrinkandroot.fixtures.example.*;
+import net.dontdrinkandroot.fixtures.loader.DefaultFixtureLoader;
+import net.dontdrinkandroot.fixtures.purger.NoopDatabasePurger;
 import org.junit.Assert;
 import org.junit.Test;
 

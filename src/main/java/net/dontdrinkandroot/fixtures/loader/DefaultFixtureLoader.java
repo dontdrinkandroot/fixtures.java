@@ -1,7 +1,10 @@
-package net.dontdrinkandroot.fixtures;
+package net.dontdrinkandroot.fixtures.loader;
 
+import net.dontdrinkandroot.fixtures.Fixture;
+import net.dontdrinkandroot.fixtures.ReferenceRepository;
 import net.dontdrinkandroot.fixtures.dependencyresolution.DirectedGraph;
 import net.dontdrinkandroot.fixtures.dependencyresolution.TopologicalSort;
+import net.dontdrinkandroot.fixtures.purger.DatabasePurger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

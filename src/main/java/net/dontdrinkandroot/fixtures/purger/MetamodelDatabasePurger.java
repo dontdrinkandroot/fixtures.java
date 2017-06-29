@@ -1,4 +1,4 @@
-package net.dontdrinkandroot.fixtures;
+package net.dontdrinkandroot.fixtures.purger;
 
 import net.dontdrinkandroot.fixtures.dependencyresolution.DirectedGraph;
 import net.dontdrinkandroot.fixtures.dependencyresolution.TopologicalSort;

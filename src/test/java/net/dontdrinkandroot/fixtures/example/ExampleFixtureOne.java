@@ -1,6 +1,5 @@
 package net.dontdrinkandroot.fixtures.example;
 
-import net.dontdrinkandroot.fixtures.AbstractFixture;
 import net.dontdrinkandroot.fixtures.Fixture;
 import net.dontdrinkandroot.fixtures.ReferenceRepository;
 
@@ -11,7 +10,7 @@ import java.util.Collections;
 /**
  * @author Philip Washington Sorst <philip@sorst.net>
  */
-public class ExampleFixtureOne extends AbstractFixture
+public class ExampleFixtureOne implements Fixture
 {
     @Override
     public Collection<Class<? extends Fixture>> getDependencies()
