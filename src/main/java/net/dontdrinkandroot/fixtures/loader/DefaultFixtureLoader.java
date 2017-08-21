@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * A {@link FixtureLoader} that is based on an {@link EntityManager} and executes a {@link DatabasePurger} before
+ * loading the fixtures.
+ *
  * @author Philip Washington Sorst <philip@sorst.net>
  */
 public class DefaultFixtureLoader implements FixtureLoader
@@ -33,7 +36,8 @@ public class DefaultFixtureLoader implements FixtureLoader
     }
 
     /**
-     * Construct a new {@link FixtureLoader} with the given {@link DatabasePurger} that will be executed before the fixtures are loaded.
+     * Construct a new {@link FixtureLoader} with the given {@link DatabasePurger} that will be executed before the
+     * fixtures are loaded.
      *
      * @param databasePurger The {@link DatabasePurger} to use.
      */

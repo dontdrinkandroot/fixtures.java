@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * @author Philip Washington Sorst <philip@sorst.net>
  */
-public class MockEntityManager implements EntityManager
+public class NoopEntityManager implements EntityManager
 {
     @Override
     public void persist(Object entity)
@@ -63,13 +63,11 @@ public class MockEntityManager implements EntityManager
     @Override
     public void flush()
     {
-
     }
 
     @Override
     public void setFlushMode(FlushModeType flushMode)
     {
-
     }
 
     @Override
@@ -81,49 +79,41 @@ public class MockEntityManager implements EntityManager
     @Override
     public void lock(Object entity, LockModeType lockMode)
     {
-
     }
 
     @Override
     public void lock(Object entity, LockModeType lockMode, Map<String, Object> properties)
     {
-
     }
 
     @Override
     public void refresh(Object entity)
     {
-
     }
 
     @Override
     public void refresh(Object entity, Map<String, Object> properties)
     {
-
     }
 
     @Override
     public void refresh(Object entity, LockModeType lockMode)
     {
-
     }
 
     @Override
     public void refresh(Object entity, LockModeType lockMode, Map<String, Object> properties)
     {
-
     }
 
     @Override
     public void clear()
     {
-
     }
 
     @Override
     public void detach(Object entity)
     {
-
     }
 
     @Override
@@ -141,7 +131,6 @@ public class MockEntityManager implements EntityManager
     @Override
     public void setProperty(String propertyName, Object value)
     {
-
     }
 
     @Override
@@ -237,7 +226,6 @@ public class MockEntityManager implements EntityManager
     @Override
     public void joinTransaction()
     {
-
     }
 
     @Override
@@ -261,7 +249,6 @@ public class MockEntityManager implements EntityManager
     @Override
     public void close()
     {
-
     }
 
     @Override

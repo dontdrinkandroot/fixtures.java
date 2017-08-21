@@ -21,6 +21,6 @@ public class ExampleFixtureTwo implements Fixture
     @Override
     public void load(EntityManager entityManager, ReferenceRepository referenceRepository)
     {
-        referenceRepository.add(this.getClass().getCanonicalName(), true);
+        referenceRepository.store(this.getClass().getCanonicalName(), true);
     }
 }

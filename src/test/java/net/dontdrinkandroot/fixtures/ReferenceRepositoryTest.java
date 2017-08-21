@@ -12,22 +12,22 @@ public class ReferenceRepositoryTest
     public void canStoreAndRetrieve()
     {
         ReferenceRepository referenceRepository = new ReferenceRepository();
-        referenceRepository.add("test", "asdf");
-        Assert.assertEquals("asdf", referenceRepository.resolve("test"));
+        referenceRepository.store("test", "asdf");
+        Assert.assertEquals("asdf", referenceRepository.retrieve("test"));
     }
 
     @Test(expected = RuntimeException.class)
     public void nullReferenceThrowsException()
     {
         ReferenceRepository referenceRepository = new ReferenceRepository();
-        referenceRepository.resolve("asdf");
+        referenceRepository.retrieve("asdf");
     }
 
     @Test(expected = ClassCastException.class)
     public void wrongClassCastThrowsException()
     {
         ReferenceRepository referenceRepository = new ReferenceRepository();
-        referenceRepository.add("test", "asdf");
-        Integer foo = referenceRepository.resolve("test");
+        referenceRepository.store("test", "asdf");
+        Integer foo = referenceRepository.retrieve("test");
     }
 }

@@ -17,22 +17,22 @@ public class DefaultFixtureLoaderTest
     public void testTransitiveLoading()
     {
         DefaultFixtureLoader defaultFixtureLoader = new DefaultFixtureLoader(new NoopDatabasePurger());
-        defaultFixtureLoader.setEntityManager(new MockEntityManager());
+        defaultFixtureLoader.setEntityManager(new NoopEntityManager());
         ReferenceRepository referenceRepository =
                 defaultFixtureLoader.load(Collections.singleton(ExampleFixtureOne.class));
 
-        Assert.assertNotNull(referenceRepository.resolve(
+        Assert.assertNotNull(referenceRepository.retrieve(
                 ExampleFixtureOne.class.getCanonicalName()
         ));
-        Assert.assertNotNull(referenceRepository.resolve(
+        Assert.assertNotNull(referenceRepository.retrieve(
                 ExampleFixtureTwo.class.getCanonicalName()
         ));
-        Assert.assertNotNull(referenceRepository.resolve(
+        Assert.assertNotNull(referenceRepository.retrieve(
                 ExampleFixtureThree.class.getCanonicalName()
         ));
 
         try {
-            Assert.assertNotNull(referenceRepository.resolve(
+            Assert.assertNotNull(referenceRepository.retrieve(
                     ExampleFixtureFour.class.getCanonicalName()
             ));
             Assert.fail("Exception expected");
@@ -41,7 +41,7 @@ public class DefaultFixtureLoaderTest
         }
 
         try {
-            Assert.assertNotNull(referenceRepository.resolve(
+            Assert.assertNotNull(referenceRepository.retrieve(
                     ExampleFixtureFive.class.getCanonicalName()
             ));
             Assert.fail("Exception expected");
@@ -55,7 +55,7 @@ public class DefaultFixtureLoaderTest
     {
         try {
             DefaultFixtureLoader defaultFixtureLoader = new DefaultFixtureLoader(new NoopDatabasePurger());
-            defaultFixtureLoader.setEntityManager(new MockEntityManager());
+            defaultFixtureLoader.setEntityManager(new NoopEntityManager());
             defaultFixtureLoader.load(Collections.singleton(ExampleFixtureFour.class));
             Assert.fail("Exception expected");
         } catch (RuntimeException e) {

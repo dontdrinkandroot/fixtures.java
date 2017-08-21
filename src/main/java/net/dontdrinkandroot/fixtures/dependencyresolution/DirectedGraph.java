@@ -7,11 +7,11 @@ import java.util.*;
  */
 public class DirectedGraph<V>
 {
-    private Set<V> vertices = new HashSet<>();
+    private final Set<V> vertices = new HashSet<>();
 
-    private Map<V, Set<V>> outgoingEdges = new HashMap<>();
+    private final Map<V, Set<V>> outgoingEdges = new HashMap<>();
 
-    private Map<V, Set<V>> incomingEdges = new HashMap<>();
+    private final Map<V, Set<V>> incomingEdges = new HashMap<>();
 
     public void addEdge(V start, V end)
     {
