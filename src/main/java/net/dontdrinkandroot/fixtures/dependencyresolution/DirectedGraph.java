@@ -3,6 +3,8 @@ package net.dontdrinkandroot.fixtures.dependencyresolution;
 import java.util.*;
 
 /**
+ * Simple implementation of a Directed Graph.
+ *
  * @author Philip Washington Sorst <philip@sorst.net>
  */
 public class DirectedGraph<V>

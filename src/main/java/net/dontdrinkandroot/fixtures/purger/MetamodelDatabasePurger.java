@@ -83,8 +83,7 @@ public class MetamodelDatabasePurger implements DatabasePurger
                 SingularAttribute<? super T, ?> singularAttribute;
                 switch (attributeType) {
                     case MANY_TO_ONE:
-                        singularAttribute = (SingularAttribute<? super T, ?>) attribute;
-                        associatedClasses.add(singularAttribute.getJavaType());
+                        associatedClasses.add(attribute.getJavaType());
                         break;
                     case ONE_TO_ONE:
                         singularAttribute = (SingularAttribute<? super T, ?>) attribute;

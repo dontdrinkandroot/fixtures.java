@@ -1,7 +1,7 @@
 package net.dontdrinkandroot.fixtures.loader;
 
 import net.dontdrinkandroot.fixtures.Fixture;
-import net.dontdrinkandroot.fixtures.ReferenceRepository;
+import net.dontdrinkandroot.fixtures.referencerepository.ReferenceRepository;
 
 import java.util.Collection;
 

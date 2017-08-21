@@ -1,10 +1,11 @@
 package net.dontdrinkandroot.fixtures.loader;
 
 import net.dontdrinkandroot.fixtures.Fixture;
-import net.dontdrinkandroot.fixtures.ReferenceRepository;
 import net.dontdrinkandroot.fixtures.dependencyresolution.DirectedGraph;
 import net.dontdrinkandroot.fixtures.dependencyresolution.TopologicalSort;
 import net.dontdrinkandroot.fixtures.purger.DatabasePurger;
+import net.dontdrinkandroot.fixtures.referencerepository.MapBackedReferenceRepository;
+import net.dontdrinkandroot.fixtures.referencerepository.ReferenceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +50,7 @@ public class DefaultFixtureLoader implements FixtureLoader
     @Override
     public ReferenceRepository load(Collection<Class<? extends Fixture>> fixtureClasses)
     {
-        ReferenceRepository referenceRepository = new ReferenceRepository();
+        ReferenceRepository referenceRepository = new MapBackedReferenceRepository();
 
         if (null != this.databasePurger) {
             this.databasePurger.purge();
