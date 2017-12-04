@@ -5,6 +5,8 @@
     <version>0.1.2-SNAPSHOT</version>
     <inceptionYear>2017</inceptionYear>
     <description>JPA fixture loader</description>
+    <name>fixtures</name>
+    <url>https://dontdrinkandroot.net/github/fixtures.java</url>
 
     <developers>
         <developer>
