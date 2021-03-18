@@ -5,7 +5,7 @@ import java.util.*
 /**
  * Kahn's algorithm.
  */
-fun <V> DirectedGraph<V>.getTopologialOrder(): List<V> {
+fun <V> DirectedGraph<V>.getTopologicalOrder(): List<V> {
     val graph = this.clone()
     val orderedVertices: MutableList<V> = ArrayList()
     val independentVertices = Stack<V>()

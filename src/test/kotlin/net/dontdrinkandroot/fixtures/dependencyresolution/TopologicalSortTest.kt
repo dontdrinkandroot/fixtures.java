@@ -8,7 +8,7 @@ class TopologicalSortTest {
     @Test
     fun testEmpty() {
         val graph = DirectedGraph<String>()
-        val orderedVertices = graph.getTopologialOrder()
+        val orderedVertices = graph.getTopologicalOrder()
         Assert.assertTrue(orderedVertices.isEmpty())
     }
 
@@ -16,7 +16,7 @@ class TopologicalSortTest {
     fun testSimple() {
         val graph = DirectedGraph<String>()
         graph.addEdge("one", "two")
-        val orderedVertices = graph.getTopologialOrder()
+        val orderedVertices = graph.getTopologicalOrder()
         Assert.assertEquals("one", orderedVertices[0])
         Assert.assertEquals("two", orderedVertices[1])
     }
@@ -27,7 +27,7 @@ class TopologicalSortTest {
         graph.addEdge("one", "two")
         graph.addEdge("two", "three")
         graph.addEdge("two", "four")
-        val orderedVertices = graph.getTopologialOrder()
+        val orderedVertices = graph.getTopologicalOrder()
         Assert.assertEquals("one", orderedVertices[0])
         Assert.assertEquals("two", orderedVertices[1])
         Assert.assertEquals("three", orderedVertices[2])
@@ -41,7 +41,7 @@ class TopologicalSortTest {
         graph.addEdge("two", "three")
         graph.addEdge("three", "one")
         try {
-            val orderedVertices = graph.getTopologialOrder()
+            val orderedVertices = graph.getTopologicalOrder()
             Assert.fail("Exception expected")
         } catch (e: RuntimeException) {
             Assert.assertEquals(
