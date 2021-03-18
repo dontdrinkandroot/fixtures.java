@@ -1,7 +1,7 @@
 package net.dontdrinkandroot.fixtures.purger
 
 import net.dontdrinkandroot.fixtures.dependencyresolution.DirectedGraph
-import net.dontdrinkandroot.fixtures.dependencyresolution.TopologicalSort.getTopologialOrder
+import net.dontdrinkandroot.fixtures.dependencyresolution.getTopologialOrder
 import org.slf4j.LoggerFactory
 import java.util.*
 import javax.persistence.EntityManager
@@ -53,7 +53,7 @@ class MetamodelDatabasePurger : DatabasePurger {
                     dependencyGraph.addEdge(javaType, associatedClass)
                 }
             }
-            return getTopologialOrder(dependencyGraph)
+            return dependencyGraph.getTopologialOrder()
         }
 
     private fun <T> getAssociatedClasses(entityType: EntityType<T>): Set<Class<*>> {

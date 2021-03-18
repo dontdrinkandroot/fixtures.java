@@ -2,7 +2,7 @@ package net.dontdrinkandroot.fixtures.loader
 
 import net.dontdrinkandroot.fixtures.Fixture
 import net.dontdrinkandroot.fixtures.dependencyresolution.DirectedGraph
-import net.dontdrinkandroot.fixtures.dependencyresolution.TopologicalSort
+import net.dontdrinkandroot.fixtures.dependencyresolution.getTopologialOrder
 import net.dontdrinkandroot.fixtures.purger.DatabasePurger
 import net.dontdrinkandroot.fixtures.purger.NoopDatabasePurger
 import net.dontdrinkandroot.fixtures.referencerepository.MapBackedReferenceRepository
@@ -48,7 +48,7 @@ class DefaultFixtureLoader(private val databasePurger: DatabasePurger = NoopData
         for (fixtureClass in fixtureClasses) {
             addFixtureClass(fixtureClass, fixtureGraph, instantiatedFixtures)
         }
-        return TopologicalSort.getTopologialOrder(fixtureGraph)
+        return fixtureGraph.getTopologialOrder()
     }
 
     @Throws(IllegalAccessException::class, InstantiationException::class)
