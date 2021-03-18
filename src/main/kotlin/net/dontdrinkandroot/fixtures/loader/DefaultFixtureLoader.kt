@@ -1,133 +1,77 @@
-/*
- * Copyright (C) 2017 Philip Washington Sorst <philip@sorst.net>
- * and individual contributors as indicated
- * by the @authors tag.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package net.dontdrinkandroot.fixtures.loader;
+package net.dontdrinkandroot.fixtures.loader
 
-import net.dontdrinkandroot.fixtures.Fixture;
-import net.dontdrinkandroot.fixtures.dependencyresolution.DirectedGraph;
-import net.dontdrinkandroot.fixtures.dependencyresolution.TopologicalSort;
-import net.dontdrinkandroot.fixtures.purger.DatabasePurger;
-import net.dontdrinkandroot.fixtures.referencerepository.MapBackedReferenceRepository;
-import net.dontdrinkandroot.fixtures.referencerepository.ReferenceRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import net.dontdrinkandroot.fixtures.Fixture
+import net.dontdrinkandroot.fixtures.dependencyresolution.DirectedGraph
+import net.dontdrinkandroot.fixtures.dependencyresolution.TopologicalSort
+import net.dontdrinkandroot.fixtures.purger.DatabasePurger
+import net.dontdrinkandroot.fixtures.purger.NoopDatabasePurger
+import net.dontdrinkandroot.fixtures.referencerepository.MapBackedReferenceRepository
+import net.dontdrinkandroot.fixtures.referencerepository.ReferenceRepository
+import org.slf4j.LoggerFactory
+import java.util.*
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 
 /**
- * A {@link FixtureLoader} that is based on an {@link EntityManager} and executes a {@link DatabasePurger} before
+ * A [FixtureLoader] that is based on an [EntityManager] and executes a [DatabasePurger] before
  * loading the fixtures.
- *
- * @author Philip Washington Sorst <philip@sorst.net>
  */
-public class DefaultFixtureLoader implements FixtureLoader
-{
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+class DefaultFixtureLoader(private val databasePurger: DatabasePurger = NoopDatabasePurger()) : FixtureLoader {
+
+    private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @PersistenceContext
-    protected EntityManager entityManager;
+    lateinit var entityManager: EntityManager
 
-    private DatabasePurger databasePurger = null;
-
-    public DefaultFixtureLoader()
-    {
-        /* Default constructor */
+    override fun load(fixtureClasses: Collection<Class<out Fixture>>): ReferenceRepository {
+        val referenceRepository: ReferenceRepository = MapBackedReferenceRepository()
+        databasePurger.purge()
+        val orderedFixtures: List<Fixture> = try {
+            getOrderedFixtures(fixtureClasses)
+        } catch (e: IllegalAccessException) {
+            throw RuntimeException(e)
+        } catch (e: InstantiationException) {
+            throw RuntimeException(e)
+        }
+        for (fixture in orderedFixtures) {
+            logger.info("Loading fixture " + fixture.javaClass.canonicalName)
+            fixture.load(entityManager, referenceRepository)
+            entityManager.flush()
+        }
+        return referenceRepository
     }
 
-    /**
-     * Construct a new {@link FixtureLoader} with the given {@link DatabasePurger} that will be executed before the
-     * fixtures are loaded.
-     *
-     * @param databasePurger The {@link DatabasePurger} to use.
-     */
-    public DefaultFixtureLoader(DatabasePurger databasePurger)
-    {
-        this.databasePurger = databasePurger;
+    @Throws(IllegalAccessException::class, InstantiationException::class)
+    private fun getOrderedFixtures(fixtureClasses: Collection<Class<out Fixture>>): List<Fixture> {
+        val instantiatedFixtures: MutableMap<Class<out Fixture>, Fixture> = HashMap()
+        val fixtureGraph = DirectedGraph<Fixture>()
+        for (fixtureClass in fixtureClasses) {
+            addFixtureClass(fixtureClass, fixtureGraph, instantiatedFixtures)
+        }
+        return TopologicalSort.getTopologialOrder(fixtureGraph)
     }
 
-    @Override
-    public ReferenceRepository load(Collection<Class<? extends Fixture>> fixtureClasses)
-    {
-        ReferenceRepository referenceRepository = new MapBackedReferenceRepository();
-
-        if (null != this.databasePurger) {
-            this.databasePurger.purge();
-        }
-
-        List<Fixture> orderedFixtures;
-        try {
-            orderedFixtures = this.getOrderedFixtures(fixtureClasses);
-        } catch (IllegalAccessException | InstantiationException e) {
-            throw new RuntimeException(e);
-        }
-
-        for (Fixture fixture : orderedFixtures) {
-            this.logger.info("Loading fixture " + fixture.getClass().getCanonicalName());
-            fixture.load(this.entityManager, referenceRepository);
-            this.entityManager.flush();
-        }
-
-        return referenceRepository;
-    }
-
-    private List<Fixture> getOrderedFixtures(Collection<Class<? extends Fixture>> fixtureClasses) throws IllegalAccessException, InstantiationException
-    {
-        Map<Class<? extends Fixture>, Fixture> instantiatedFixtures = new HashMap<>();
-        DirectedGraph<Fixture> fixtureGraph = new DirectedGraph<>();
-        for (Class<? extends Fixture> fixtureClass : fixtureClasses) {
-            this.addFixtureClass(fixtureClass, fixtureGraph, instantiatedFixtures);
-        }
-
-        return TopologicalSort.getTopologialOrder(fixtureGraph);
-    }
-
-    private Fixture addFixtureClass(
-            Class<? extends Fixture> fixtureClass,
-            DirectedGraph<Fixture> fixtureGraph,
-            Map<Class<? extends Fixture>, Fixture> instantiatedFixtures
-    ) throws IllegalAccessException, InstantiationException
-    {
-        Fixture fixture = instantiatedFixtures.get(fixtureClass);
+    @Throws(IllegalAccessException::class, InstantiationException::class)
+    private fun addFixtureClass(
+        fixtureClass: Class<out Fixture>,
+        fixtureGraph: DirectedGraph<Fixture>,
+        instantiatedFixtures: MutableMap<Class<out Fixture>, Fixture>
+    ): Fixture {
+        var fixture = instantiatedFixtures[fixtureClass]
         if (null == fixture) {
-            fixture = this.instantiateFixtureClass(fixtureClass);
-            fixtureGraph.addVertex(fixture);
-            instantiatedFixtures.put(fixtureClass, fixture);
-            for (Class<? extends Fixture> dependingFixtureClass : fixture.getDependencies()) {
-                Fixture dependingFixture =
-                        this.addFixtureClass(dependingFixtureClass, fixtureGraph, instantiatedFixtures);
-                fixtureGraph.addEdge(dependingFixture, fixture);
+            fixture = instantiateFixtureClass(fixtureClass)
+            fixtureGraph.addVertex(fixture)
+            instantiatedFixtures[fixtureClass] = fixture
+            for (dependingFixtureClass in fixture.dependencies) {
+                val dependingFixture = addFixtureClass(dependingFixtureClass, fixtureGraph, instantiatedFixtures)
+                fixtureGraph.addEdge(dependingFixture, fixture)
             }
         }
-
-        return fixture;
+        return fixture
     }
 
-    protected Fixture instantiateFixtureClass(Class<? extends Fixture> fixtureClass) throws InstantiationException, IllegalAccessException
-    {
-        return fixtureClass.newInstance();
-    }
-
-    public void setEntityManager(EntityManager entityManager)
-    {
-        this.entityManager = entityManager;
+    @Throws(InstantiationException::class, IllegalAccessException::class)
+    protected fun instantiateFixtureClass(fixtureClass: Class<out Fixture>): Fixture {
+        return fixtureClass.newInstance()
     }
 }

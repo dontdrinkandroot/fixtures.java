@@ -1,324 +1,181 @@
-/*
- * Copyright (C) 2017 Philip Washington Sorst <philip@sorst.net>
- * and individual contributors as indicated
- * by the @authors tag.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package net.dontdrinkandroot.fixtures.example;
+package net.dontdrinkandroot.fixtures.example
 
-import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.CriteriaUpdate;
-import javax.persistence.metamodel.Metamodel;
-import java.util.List;
-import java.util.Map;
+import javax.persistence.*
+import javax.persistence.criteria.CriteriaBuilder
+import javax.persistence.criteria.CriteriaDelete
+import javax.persistence.criteria.CriteriaQuery
+import javax.persistence.criteria.CriteriaUpdate
+import javax.persistence.metamodel.Metamodel
 
-/**
- * @author Philip Washington Sorst <philip@sorst.net>
- */
-public class NoopEntityManager implements EntityManager
-{
-    @Override
-    public void persist(Object entity)
-    {
+class NoopEntityManager : EntityManager {
+
+    override fun persist(entity: Any) {}
+    override fun <T> merge(entity: T): T? {
+        return null
     }
 
-    @Override
-    public <T> T merge(T entity)
-    {
-        return null;
+    override fun remove(entity: Any) {}
+    override fun <T> find(entityClass: Class<T>, primaryKey: Any): T? {
+        return null
     }
 
-    @Override
-    public void remove(Object entity)
-    {
+    override fun <T> find(entityClass: Class<T>, primaryKey: Any, properties: Map<String, Any>): T? {
+        return null
     }
 
-    @Override
-    public <T> T find(Class<T> entityClass, Object primaryKey)
-    {
-        return null;
+    override fun <T> find(entityClass: Class<T>, primaryKey: Any, lockMode: LockModeType): T? {
+        return null
     }
 
-    @Override
-    public <T> T find(Class<T> entityClass, Object primaryKey, Map<String, Object> properties)
-    {
-        return null;
+    override fun <T> find(
+        entityClass: Class<T>,
+        primaryKey: Any,
+        lockMode: LockModeType,
+        properties: Map<String, Any>
+    ): T? {
+        return null
     }
 
-    @Override
-    public <T> T find(Class<T> entityClass, Object primaryKey, LockModeType lockMode)
-    {
-        return null;
+    override fun <T> getReference(entityClass: Class<T>, primaryKey: Any): T? {
+        return null
     }
 
-    @Override
-    public <T> T find(Class<T> entityClass, Object primaryKey, LockModeType lockMode, Map<String, Object> properties)
-    {
-        return null;
+    override fun flush() {}
+    override fun setFlushMode(flushMode: FlushModeType) {}
+    override fun getFlushMode(): FlushModeType? {
+        return null
     }
 
-    @Override
-    public <T> T getReference(Class<T> entityClass, Object primaryKey)
-    {
-        return null;
+    override fun lock(entity: Any, lockMode: LockModeType) {}
+    override fun lock(entity: Any, lockMode: LockModeType, properties: Map<String, Any>) {}
+    override fun refresh(entity: Any) {}
+    override fun refresh(entity: Any, properties: Map<String, Any>) {}
+    override fun refresh(entity: Any, lockMode: LockModeType) {}
+    override fun refresh(entity: Any, lockMode: LockModeType, properties: Map<String, Any>) {}
+    override fun clear() {}
+    override fun detach(entity: Any) {}
+    override fun contains(entity: Any): Boolean {
+        return false
     }
 
-    @Override
-    public void flush()
-    {
+    override fun getLockMode(entity: Any): LockModeType? {
+        return null
     }
 
-    @Override
-    public void setFlushMode(FlushModeType flushMode)
-    {
+    override fun setProperty(propertyName: String, value: Any) {}
+    override fun getProperties(): Map<String, Any>? {
+        return null
     }
 
-    @Override
-    public FlushModeType getFlushMode()
-    {
-        return null;
+    override fun createQuery(qlString: String): Query? {
+        return null
     }
 
-    @Override
-    public void lock(Object entity, LockModeType lockMode)
-    {
+    override fun <T> createQuery(criteriaQuery: CriteriaQuery<T>): TypedQuery<T>? {
+        return null
     }
 
-    @Override
-    public void lock(Object entity, LockModeType lockMode, Map<String, Object> properties)
-    {
+    override fun createQuery(updateQuery: CriteriaUpdate<*>?): Query? {
+        return null
     }
 
-    @Override
-    public void refresh(Object entity)
-    {
+    override fun createQuery(deleteQuery: CriteriaDelete<*>?): Query? {
+        return null
     }
 
-    @Override
-    public void refresh(Object entity, Map<String, Object> properties)
-    {
+    override fun <T> createQuery(qlString: String, resultClass: Class<T>): TypedQuery<T>? {
+        return null
     }
 
-    @Override
-    public void refresh(Object entity, LockModeType lockMode)
-    {
+    override fun createNamedQuery(name: String): Query? {
+        return null
     }
 
-    @Override
-    public void refresh(Object entity, LockModeType lockMode, Map<String, Object> properties)
-    {
+    override fun <T> createNamedQuery(name: String, resultClass: Class<T>): TypedQuery<T>? {
+        return null
     }
 
-    @Override
-    public void clear()
-    {
+    override fun createNativeQuery(sqlString: String): Query? {
+        return null
     }
 
-    @Override
-    public void detach(Object entity)
-    {
+    override fun createNativeQuery(sqlString: String, resultClass: Class<*>?): Query? {
+        return null
     }
 
-    @Override
-    public boolean contains(Object entity)
-    {
-        return false;
+    override fun createNativeQuery(sqlString: String, resultSetMapping: String): Query? {
+        return null
     }
 
-    @Override
-    public LockModeType getLockMode(Object entity)
-    {
-        return null;
+    override fun createNamedStoredProcedureQuery(name: String): StoredProcedureQuery? {
+        return null
     }
 
-    @Override
-    public void setProperty(String propertyName, Object value)
-    {
+    override fun createStoredProcedureQuery(procedureName: String): StoredProcedureQuery? {
+        return null
     }
 
-    @Override
-    public Map<String, Object> getProperties()
-    {
-        return null;
+    override fun createStoredProcedureQuery(
+        procedureName: String,
+        resultClasses: Array<Class<*>?>?
+    ): StoredProcedureQuery? {
+        return null
     }
 
-    @Override
-    public Query createQuery(String qlString)
-    {
-        return null;
+    override fun createStoredProcedureQuery(
+        procedureName: String,
+        vararg resultSetMappings: String
+    ): StoredProcedureQuery? {
+        return null
     }
 
-    @Override
-    public <T> TypedQuery<T> createQuery(CriteriaQuery<T> criteriaQuery)
-    {
-        return null;
+    override fun joinTransaction() {}
+    override fun isJoinedToTransaction(): Boolean {
+        return false
     }
 
-    @Override
-    public Query createQuery(CriteriaUpdate updateQuery)
-    {
-        return null;
+    override fun <T> unwrap(cls: Class<T>): T? {
+        return null
     }
 
-    @Override
-    public Query createQuery(CriteriaDelete deleteQuery)
-    {
-        return null;
+    override fun getDelegate(): Any? {
+        return null
     }
 
-    @Override
-    public <T> TypedQuery<T> createQuery(String qlString, Class<T> resultClass)
-    {
-        return null;
+    override fun close() {}
+    override fun isOpen(): Boolean {
+        return false
     }
 
-    @Override
-    public Query createNamedQuery(String name)
-    {
-        return null;
+    override fun getTransaction(): EntityTransaction? {
+        return null
     }
 
-    @Override
-    public <T> TypedQuery<T> createNamedQuery(String name, Class<T> resultClass)
-    {
-        return null;
+    override fun getEntityManagerFactory(): EntityManagerFactory? {
+        return null
     }
 
-    @Override
-    public Query createNativeQuery(String sqlString)
-    {
-        return null;
+    override fun getCriteriaBuilder(): CriteriaBuilder? {
+        return null
     }
 
-    @Override
-    public Query createNativeQuery(String sqlString, Class resultClass)
-    {
-        return null;
+    override fun getMetamodel(): Metamodel? {
+        return null
     }
 
-    @Override
-    public Query createNativeQuery(String sqlString, String resultSetMapping)
-    {
-        return null;
+    override fun <T> createEntityGraph(rootType: Class<T>): EntityGraph<T>? {
+        return null
     }
 
-    @Override
-    public StoredProcedureQuery createNamedStoredProcedureQuery(String name)
-    {
-        return null;
+    override fun createEntityGraph(graphName: String): EntityGraph<*>? {
+        return null
     }
 
-    @Override
-    public StoredProcedureQuery createStoredProcedureQuery(String procedureName)
-    {
-        return null;
+    override fun getEntityGraph(graphName: String): EntityGraph<*>? {
+        return null
     }
 
-    @Override
-    public StoredProcedureQuery createStoredProcedureQuery(String procedureName, Class[] resultClasses)
-    {
-        return null;
-    }
-
-    @Override
-    public StoredProcedureQuery createStoredProcedureQuery(String procedureName, String... resultSetMappings)
-    {
-        return null;
-    }
-
-    @Override
-    public void joinTransaction()
-    {
-    }
-
-    @Override
-    public boolean isJoinedToTransaction()
-    {
-        return false;
-    }
-
-    @Override
-    public <T> T unwrap(Class<T> cls)
-    {
-        return null;
-    }
-
-    @Override
-    public Object getDelegate()
-    {
-        return null;
-    }
-
-    @Override
-    public void close()
-    {
-    }
-
-    @Override
-    public boolean isOpen()
-    {
-        return false;
-    }
-
-    @Override
-    public EntityTransaction getTransaction()
-    {
-        return null;
-    }
-
-    @Override
-    public EntityManagerFactory getEntityManagerFactory()
-    {
-        return null;
-    }
-
-    @Override
-    public CriteriaBuilder getCriteriaBuilder()
-    {
-        return null;
-    }
-
-    @Override
-    public Metamodel getMetamodel()
-    {
-        return null;
-    }
-
-    @Override
-    public <T> EntityGraph<T> createEntityGraph(Class<T> rootType)
-    {
-        return null;
-    }
-
-    @Override
-    public EntityGraph<?> createEntityGraph(String graphName)
-    {
-        return null;
-    }
-
-    @Override
-    public EntityGraph<?> getEntityGraph(String graphName)
-    {
-        return null;
-    }
-
-    @Override
-    public <T> List<EntityGraph<? super T>> getEntityGraphs(Class<T> entityClass)
-    {
-        return null;
+    override fun <T> getEntityGraphs(entityClass: Class<T>): List<EntityGraph<in T>>? {
+        return null
     }
 }
