@@ -70,12 +70,12 @@
         <org.eluder.coveralls.coveralls-maven-plugin.version>4.3.0</org.eluder.coveralls.coveralls-maven-plugin.version>
         <com.mycila.license-maven-plugin-parent.version>3.0</com.mycila.license-maven-plugin-parent.version>
         <!-- Dependencies -->
-        <org.hibernate.javax.persistence.hibernate-jpa-2.1-api.version>1.0.0.Final
+        <org.hibernate.javax.persistence.hibernate-jpa-2.1-api.version>1.0.2
         </org.hibernate.javax.persistence.hibernate-jpa-2.1-api.version>
-        <org.slf4j.version>1.7.25</org.slf4j.version>
+        <org.slf4j.version>1.7.30</org.slf4j.version>
         <!-- Testing -->
-        <junit.version>4.12</junit.version>
-        <org.apache.logging.log4j.version>2.10.0</org.apache.logging.log4j.version>
+        <junit.version>4.13.2</junit.version>
+        <org.apache.logging.log4j.version>2.14.1</org.apache.logging.log4j.version>
     </properties>
 
     <build>
