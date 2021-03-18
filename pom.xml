@@ -74,7 +74,7 @@
         </org.hibernate.javax.persistence.hibernate-jpa-2.1-api.version>
         <org.slf4j.version>1.7.25</org.slf4j.version>
         <!-- Testing -->
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <org.apache.logging.log4j.version>2.10.0</org.apache.logging.log4j.version>
     </properties>
 
