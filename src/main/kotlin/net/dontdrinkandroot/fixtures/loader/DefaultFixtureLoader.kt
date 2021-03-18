@@ -16,7 +16,7 @@ import javax.persistence.PersistenceContext
  * A [FixtureLoader] that is based on an [EntityManager] and executes a [DatabasePurger] before
  * loading the fixtures.
  */
-class DefaultFixtureLoader(private val databasePurger: DatabasePurger = NoopDatabasePurger()) : FixtureLoader {
+open class DefaultFixtureLoader(private val databasePurger: DatabasePurger = NoopDatabasePurger()) : FixtureLoader {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
@@ -71,7 +71,7 @@ class DefaultFixtureLoader(private val databasePurger: DatabasePurger = NoopData
     }
 
     @Throws(InstantiationException::class, IllegalAccessException::class)
-    protected fun instantiateFixtureClass(fixtureClass: Class<out Fixture>): Fixture {
+    protected open fun instantiateFixtureClass(fixtureClass: Class<out Fixture>): Fixture {
         return fixtureClass.newInstance()
     }
 }

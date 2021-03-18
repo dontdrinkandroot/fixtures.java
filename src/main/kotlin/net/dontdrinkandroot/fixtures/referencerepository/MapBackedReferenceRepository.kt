@@ -13,7 +13,6 @@ class MapBackedReferenceRepository : ReferenceRepository {
         objects[name] = obj
     }
 
-    override fun <T : Any> retrieve(name: String): T {
-        return objects[name] as T
-    }
+    override fun <T : Any> retrieve(name: String): T =
+        (objects[name] ?: throw RuntimeException("Reference not found")) as T
 }
