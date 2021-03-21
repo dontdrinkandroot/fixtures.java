@@ -2,6 +2,7 @@ package net.dontdrinkandroot.fixtures
 
 import net.dontdrinkandroot.fixtures.referencerepository.ReferenceRepository
 import javax.persistence.EntityManager
+import kotlin.reflect.KClass
 
 /**
  * A [Fixture] is responsible for storing one or many objects in the database.
@@ -13,7 +14,7 @@ interface Fixture {
      *
      * @return The collection of fixture classes to load before this fixture.
      */
-    val dependencies: Collection<Class<out Fixture>>
+    val dependencies: Collection<KClass<out Fixture>>
         get() = emptyList()
 
     /**

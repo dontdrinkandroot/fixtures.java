@@ -12,38 +12,18 @@ class DefaultFixtureLoaderTest {
     fun testTransitiveLoading() {
         val defaultFixtureLoader = DefaultFixtureLoader(NoopDatabasePurger())
         defaultFixtureLoader.entityManager = NoopEntityManager()
-        val referenceRepository = defaultFixtureLoader.load(setOf(ExampleFixtureOne::class.java))
-        Assert.assertNotNull(
-            referenceRepository.retrieve(
-                ExampleFixtureOne::class.java.canonicalName
-            )
-        )
-        Assert.assertNotNull(
-            referenceRepository.retrieve(
-                ExampleFixtureTwo::class.java.canonicalName
-            )
-        )
-        Assert.assertNotNull(
-            referenceRepository.retrieve(
-                ExampleFixtureThree::class.java.canonicalName
-            )
-        )
+        val referenceRepository = defaultFixtureLoader.load(setOf(ExampleFixtureOne::class))
+        Assert.assertNotNull(referenceRepository.retrieve(ExampleFixtureOne::class))
+        Assert.assertNotNull(referenceRepository.retrieve(ExampleFixtureTwo::class))
+        Assert.assertNotNull(referenceRepository.retrieve(ExampleFixtureThree::class))
         try {
-            Assert.assertNotNull(
-                referenceRepository.retrieve(
-                    ExampleFixtureFour::class.java.canonicalName
-                )
-            )
+            Assert.assertNotNull(referenceRepository.retrieve(ExampleFixtureFour::class))
             Assert.fail("Exception expected")
         } catch (e: RuntimeException) {
             /* Expected */
         }
         try {
-            Assert.assertNotNull(
-                referenceRepository.retrieve(
-                    ExampleFixtureFive::class.java.canonicalName
-                )
-            )
+            Assert.assertNotNull(referenceRepository.retrieve(ExampleFixtureFive::class))
             Assert.fail("Exception expected")
         } catch (e: RuntimeException) {
             /* Expected */
@@ -55,7 +35,7 @@ class DefaultFixtureLoaderTest {
         try {
             val defaultFixtureLoader = DefaultFixtureLoader(NoopDatabasePurger())
             defaultFixtureLoader.entityManager = NoopEntityManager()
-            defaultFixtureLoader.load(setOf(ExampleFixtureFour::class.java))
+            defaultFixtureLoader.load(setOf(ExampleFixtureFour::class))
             Assert.fail("Exception expected")
         } catch (e: RuntimeException) {
             Assert.assertTrue(e.message!!.startsWith("Graph has at least one cycle:"))
